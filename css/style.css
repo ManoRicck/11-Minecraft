@@ -1,0 +1,874 @@
+@font-face {
+    font-family: 'Minecraft';
+    src: url('../font/Minecraft.woff') format('woff');
+  }
+  
+  @layer reset {
+    :root {
+      font-family: "Minecraft", sans-serif;
+      font-optical-sizing: auto;
+      line-height: 1.5;
+      font-weight: 400;
+  
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+  
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+  
+    * {
+      margin: 0;
+    }
+  
+    @media (prefers-reduced-motion: no-preference) {
+      html {
+        interpolate-size: allow-keywords;
+      }
+    }
+  
+    body {
+      min-height: 100vh;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      display: grid;
+      place-content: center;
+      background-color: #333;
+      padding: 1rem;
+    }
+  
+    ul {
+      padding: 0;
+      list-style: none;
+    }
+  }
+  
+  @layer main {
+    /* Posição inicial do quadro */
+    @property --sprite-fs {
+      syntax: "<integer>";
+      initial-value: 0;
+      inherits: false
+    }
+  
+    :root {
+      /* duração da animação */
+      /*--sprite-as: .8s;*/
+      /* direção de animação */
+      --sprite-ad: normal;
+      /* modo de preenchimento de animação */
+      --sprite-af: none;
+      /* estado de reprodução da animação */
+      --sprite-ap: running;
+      /* contagem de iterações de animação */
+      --sprite-ai: infinite;
+      /* função de tempo de animação */
+      --sprite-at: linear;
+      /* taxa de quadros de animação */
+      --sprite-fr: 48;
+  
+
+      --image-1: url(../img/sprites/gato.webp);
+
+      --image-2: url(../img/sprites/aranha.webp);
+
+      --image-3: url(../img/sprites/vaca.webp);
+
+      --image-4: url(../img/sprites/creeper.webp);
+
+      --image-5: url(../img/sprites/enderman.webp);
+
+      --image-6: url(../img/sprites/invocador.webp);
+
+      --image-7: url(../img/sprites/golem.webp);
+
+      --image-8: url(../img/sprites/cavalo_esqueleto.webp);
+
+      --image-9: url(../img/sprites/jaguatirica.webp);
+
+      --image-10: url(../img/sprites/panda.webp);
+
+      --image-11: url(../img/sprites/esqueleto.webp);
+
+      --image-12: url(../img/sprites/lobo.webp);
+
+      --image-13: url(../img/sprites/lula.webp);
+
+      --image-14: url(../img/sprites/raposa.webp);
+
+      --image-15: url(../img/sprites/aldeão.webp);
+  
+      --characater-1: 'Gato';
+      --characater-2: 'Aranha';
+      --characater-3: 'Vaca';
+      --characater-4: 'Creeper';
+      --characater-5: 'Enderman';
+      --characater-6: 'Invocador';
+      --characater-7: 'Golem de Ferro';
+      --characater-8: 'Cavalo Esqueleto';
+      --characater-9: 'Jaguatirica';
+      --characater-10: 'Panda';
+      --characater-11: 'Esqueleto';
+      --characater-12: 'Lobo';
+      --characater-13: 'Lula';
+      --characater-14: 'Raposa';
+      --characater-15: 'Aldeão';
+    }
+  }
+  
+  @media (width < 940px) {
+    #app {
+      main {
+        .characters {
+          grid-template-columns: repeat(3, minmax(110px, 1fr));
+          grid-template-rows: repeat(5, 160px);
+        }
+  
+        .preview {
+          position: sticky;
+          top: .5rem;
+          height: fit-content;
+  
+          .preview-container {
+            --sprite-tw: 220;
+          }
+        }
+      }
+    }
+  }
+  
+  @media (width < 680px) {
+    #app {
+      header {
+        > div {
+          & > small {
+            display: none;
+          }
+        }
+      }
+  
+      main {
+        .characters {
+          grid-template-columns: repeat(2, minmax(110px, 1fr));
+          grid-template-rows: repeat(8, 160px);
+        }
+      }
+    }
+  }
+  
+  @media (width < 560px) {
+    #app {
+      header {
+        > div.additional {
+          display: none;
+  
+          kbd {
+            width: 36px;
+            font-size: 1.25rem;
+          }
+        }
+      }
+  
+      main.container {
+        gap: 1rem;
+  
+        .characters {
+          grid-template-columns: repeat(2, minmax(90px, 1fr));
+          grid-template-rows: repeat(8, 120px);
+  
+          > div {
+            .character > img {
+              max-width: 50px;
+              max-height: 50px;
+            }
+          }
+        }
+  
+        .preview {
+          .preview-container {
+            --sprite-tw: 160;
+  
+            .sprite-stats {
+              font-size: .7rem;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  @media (width < 435px) {
+    #app {
+      main.container {
+        .characters {
+          grid-template-columns: repeat(1, minmax(90px, 1fr));
+          grid-template-rows: repeat(15, 100px);
+        }
+      }
+    }
+  }
+  
+  @media (prefers-reduced-motion) {
+    * {
+      animation: none;
+    }
+  }
+  
+  @keyframes frame {
+    to {
+      --sprite-fs: var(--sprite-fe);
+    }
+  }
+  
+  
+  #app {
+    display: grid;
+    gap: 1rem;
+  
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  
+      h1 {
+        --color: black;
+        --shadow-width: 2px;
+        --shadow-width-negative: calc(2px * -1);
+        color: white;
+        font-size: clamp(1.25rem, 0.875rem + 2vw, 2rem);
+        text-box: trim-both cap alphabetic;
+        text-shadow: 0 var(--shadow-width) 0 var(--color),
+        var(--shadow-width) 0 0 var(--color),
+        var(--shadow-width) var(--shadow-width) 0 var(--color),
+        var(--shadow-width-negative) var(--shadow-width-negative) 0 var(--color),
+        var(--shadow-width) var(--shadow-width-negative) 0 var(--color),
+        var(--shadow-width-negative) var(--shadow-width) 0 var(--color);
+      }
+  
+      & > div {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-end;
+        opacity: .5;
+  
+        small {
+          color: white;
+          width: 10rem;
+          text-align: right
+        }
+  
+        kbd {
+          border: 2px solid #5e5e5e;
+          box-shadow: 6px 6px #222222;
+          font-size: 1.25rem;
+          font-weight: 600;
+          white-space: nowrap;
+          height: 100%;
+          aspect-ratio: 1 / 1;
+          width: 40px;
+          display: flex;
+          text-align: center;
+          align-items: center;
+          justify-content: center;
+          background: #fff;
+        }
+      }
+    }
+  
+    main {
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: 1fr auto;
+    }
+  }
+  
+  div.characters {
+    display: grid;
+    gap: .5rem;
+    grid-template-columns: repeat(5, minmax(110px, 1fr));
+    grid-template-rows: repeat(3, 160px);
+    padding: .5rem;
+    background-color: black;
+    box-shadow: 6px 6px #222222;
+    border: 2px solid #999999;
+  
+    > div {
+      position: relative;
+      background-color: #181818;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+  
+      &:has(input:checked) {
+        overflow: visible;
+        background-color: #4c8ee1;
+  
+        .character > img {
+          scale: 1.2;
+          opacity: 1;
+          --color: #ffda0e;
+        }
+      }
+  
+      input {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        appearance: none;
+        cursor: pointer;
+        z-index: 1;
+  
+        &:checked {
+          outline-offset: 0;
+          outline: 0;
+          border: 6px double black;
+        }
+  
+        &:focus, &:focus-visible {
+          outline: 0;
+        }
+      }
+  
+      label {
+        display: block;
+      }
+  
+      & > .character {
+        img {
+          max-width: 70px;
+          max-height: 70px;
+          width: auto;
+          transition: scale 0.2s ease;
+          opacity: .75;
+          --color: rgb(255, 255, 255);
+          filter: drop-shadow(0px 1px 0px var(--color)) drop-shadow(-1px 0px 0px var(--color)) drop-shadow(1px 0px 0px var(--color)) drop-shadow(0px 1px 0px var(--color)) drop-shadow(0px -1px 0px var(--color)) drop-shadow(1px 0px 0px var(--color));
+        }
+      }
+    }
+  }
+  
+  .characters:has(div:nth-child(1) > input:checked) + .preview {
+    --name: var(--characater-1);
+  
+    & > .preview-container {
+      --sprite-image: var(--image-1);
+      /* colunas de sprites */
+      --sprite-c: 5;
+      /* altura da imagem do sprite */
+      --sprite-h: 5364;
+      /* largura da imagem do sprite */
+      --sprite-w: 2980;
+      /* Quadros por quadros */
+      --sprite-f: 42;
+      /* Posição final do quadro */
+      --sprite-fe: calc(var(--sprite-f) - 1);
+    }
+  }
+  
+  .characters:has(div:nth-child(2) > input:checked) + .preview {
+    --name: var(--characater-2);
+  
+    & > .preview-container {
+      --sprite-image: var(--image-2);
+      /* colunas de sprites */
+      --sprite-c: 5;
+      /* altura da imagem do sprite */
+      --sprite-h: 3576;
+      /* largura da imagem do sprite */
+      --sprite-w: 2980;
+      /* Quadros por quadros */
+      --sprite-f: 28;
+      /* Posição final do quadro */
+      --sprite-fe: calc(var(--sprite-f) - 1);
+    }
+  }
+  
+  .characters:has(div:nth-child(3) > input:checked) + .preview {
+    --name: var(--characater-3);
+  
+    & > .preview-container {
+      --sprite-image: var(--image-3);
+      /* colunas de sprites */
+      --sprite-c: 5;
+      /* altura da imagem do sprite */
+      --sprite-h: 7152;
+      /* largura da imagem do sprite */
+      --sprite-w: 2980;
+      /* Quadros por quadros */
+      --sprite-f: 60;
+      /* Posição final do quadro */
+      --sprite-fe: calc(var(--sprite-f) - 1);
+    }
+  }
+  
+  .characters:has(div:nth-child(4) > input:checked) + .preview {
+    --name: var(--characater-4);
+  
+    & > .preview-container {
+
+      --sprite-image: var(--image-4);
+      /* colunas de sprites */
+      --sprite-c: 5;
+      /* altura da imagem do sprite */
+      --sprite-h: 6556;
+      /* largura da imagem do sprite */
+      --sprite-w: 2980;
+      /* Quadros por quadros */
+      --sprite-f: 55;
+      /* Posição final do quadro */
+      --sprite-fe: calc(var(--sprite-f) - 1);
+    }
+  }
+  
+  .characters:has(div:nth-child(5) > input:checked) + .preview {
+    --name: var(--characater-5);
+  
+    & > .preview-container {
+
+      --sprite-image: var(--image-5);
+      /* colunas de sprites */
+      --sprite-c: 5;
+      /* altura da imagem do sprite */
+      --sprite-h: 6556;
+      /* largura da imagem do sprite */
+      --sprite-w: 2980;
+      /* Quadros por quadros */
+      --sprite-f: 55;
+      /* Posição final do quadro */
+      --sprite-fe: calc(var(--sprite-f) - 1);
+    }
+  }
+  
+  .characters:has(div:nth-child(6) > input:checked) + .preview {
+    --name: var(--characater-6);
+  
+    & > .preview-container {
+
+      --sprite-image: var(--image-6);
+      /* colunas de sprites */
+      --sprite-c: 5;
+      /* altura da imagem do sprite */
+      --sprite-h: 11920;
+      /* largura da imagem do sprite */
+      --sprite-w: 2980;
+      /* Quadros por quadros */
+      --sprite-f: 99;
+      /* Posição final do quadro */
+      --sprite-fe: calc(var(--sprite-f) - 1);
+    }
+  }
+  
+  .characters:has(div:nth-child(7) > input:checked) + .preview {
+    --name: var(--characater-7);
+  
+    & > .preview-container {
+
+      --sprite-image: var(--image-7);
+      /* colunas de sprites */
+      --sprite-c: 5;
+      /* altura da imagem do sprite */
+      --sprite-h: 8940;
+      /* largura da imagem do sprite */
+      --sprite-w: 2980;
+      /* Quadros por quadros */
+      --sprite-f: 72;
+      /* Posição final do quadro */
+      --sprite-fe: calc(var(--sprite-f) - 1);
+    }
+  }
+  
+  .characters:has(div:nth-child(8) > input:checked) + .preview {
+    --name: var(--characater-8);
+  
+    & > .preview-container {
+
+      --sprite-image: var(--image-8);
+      /* colunas de sprites */
+      --sprite-c: 5;
+      /* altura da imagem do sprite */
+      --sprite-h: 5960;
+      /* largura da imagem do sprite */
+      --sprite-w: 2980;
+      /* Quadros por quadros */
+      --sprite-f: 47;
+      /* Posição final do quadro */
+      --sprite-fe: calc(var(--sprite-f) - 1);
+    }
+  }
+  
+  .characters:has(div:nth-child(9) > input:checked) + .preview {
+    --name: var(--characater-9);
+  
+    & > .preview-container {
+
+      --sprite-image: var(--image-9);
+      /* colunas de sprites */
+      --sprite-c: 5;
+      /* altura da imagem do sprite */
+      --sprite-h: 4768;
+      /* largura da imagem do sprite */
+      --sprite-w: 2980;
+      /* Quadros por quadros */
+      --sprite-f: 37;
+      /* Posição final do quadro */
+      --sprite-fe: calc(var(--sprite-f) - 1);
+    }
+  }
+  
+  .characters:has(div:nth-child(10) > input:checked) + .preview {
+    --name: var(--characater-10);
+  
+    & > .preview-container {
+
+      --sprite-image: var(--image-10);
+      /* colunas de sprites */
+      --sprite-c: 5;
+      /* altura da imagem do sprite */
+      --sprite-h: 10728;
+      /* largura da imagem do sprite */
+      --sprite-w: 2980;
+      /* Quadros por quadros */
+      --sprite-f: 88;
+      /* Posição final do quadro */
+      --sprite-fe: calc(var(--sprite-f) - 1);
+    }
+  }
+  
+  .characters:has(div:nth-child(11) > input:checked) + .preview {
+    --name: var(--characater-11);
+  
+    & > .preview-container {
+
+      --sprite-image: var(--image-11);
+      /* colunas de sprites */
+      --sprite-c: 5;
+      /* altura da imagem do sprite */
+      --sprite-h: 7748;
+      /* largura da imagem do sprite */
+      --sprite-w: 2980;
+      /* Quadros por quadros */
+      --sprite-f: 65;
+      /* Posição final do quadro */
+      --sprite-fe: calc(var(--sprite-f) - 1);
+    }
+  }
+  
+  .characters:has(div:nth-child(12) > input:checked) + .preview {
+    --name: var(--characater-12);
+  
+    & > .preview-container {
+
+      --sprite-image: var(--image-12);
+      /* colunas de sprites */
+      --sprite-c: 5;
+      /* altura da imagem do sprite */
+      --sprite-h: 7152;
+      /* largura da imagem do sprite */
+      --sprite-w: 2980;
+      /* Quadros por quadros */
+      --sprite-f: 58;
+      /* Posição final do quadro */
+      --sprite-fe: calc(var(--sprite-f) - 1);
+    }
+  }
+  
+  .characters:has(div:nth-child(13) > input:checked) + .preview {
+    --name: var(--characater-13);
+  
+    & > .preview-container {
+
+      --sprite-image: var(--image-13);
+      /* colunas de sprites */
+      --sprite-c: 5;
+      /* altura da imagem do sprite */
+      --sprite-h: 12516;
+      /* largura da imagem do sprite */
+      --sprite-w: 2980;
+      /* Quadros por quadros */
+      --sprite-f: 104;
+      /* Posição final do quadro */
+      --sprite-fe: calc(var(--sprite-f) - 1);
+    }
+  }
+  
+  .characters:has(div:nth-child(14) > input:checked) + .preview {
+    --name: var(--characater-14);
+  
+    & > .preview-container {
+
+      --sprite-image: var(--image-14);
+      /* colunas de sprites */
+      --sprite-c: 5;
+      /* altura da imagem do sprite */
+      --sprite-h: 8344;
+      /* largura da imagem do sprite */
+      --sprite-w: 2980;
+      /* Quadros por quadros */
+      --sprite-f: 69;
+      /* Posição final do quadro */
+      --sprite-fe: calc(var(--sprite-f) - 1);
+    }
+  }
+  
+  .characters:has(div:nth-child(15) > input:checked) + .preview {
+    --name: var(--characater-15);
+  
+    & > .preview-container {
+
+      --sprite-image: var(--image-15);
+      /* colunas de sprites */
+      --sprite-c: 5;
+      /* altura da imagem do sprite */
+      --sprite-h: 4768;
+      /* largura da imagem do sprite */
+      --sprite-w: 2980;
+      /* Quadros por quadros */
+      --sprite-f: 37;
+      /* Posição final do quadro */
+      --sprite-fe: calc(var(--sprite-f) - 1);
+    }
+  }
+  
+  div.preview {
+    display: grid;
+    position: relative;
+    grid-template-rows: auto 1fr;
+    place-items: center;
+    gap: .5rem;
+    padding: .5rem;
+    background-color: black;
+    border: 2px solid #4c8ee1;
+    box-shadow: 6px 6px #222222;
+    user-select: none;
+  
+    &:before {
+      content: var(--name);
+      background: #adcbf1;
+      position: relative;
+      width: 100%;
+      text-align: center;
+      line-height: 2.5rem;
+      font-weight: 700;
+      font-size: 1.25rem;
+      box-sizing: border-box;
+    }
+  
+    & > .preview-container {
+      height: 100%;
+      width: 100%;
+      display: grid;
+      gap: .5rem;
+      place-items: center;
+      place-content: center;
+      grid-template-rows: 1fr auto;
+      counter-reset: num var(--sprite-cf) col var(--sprite-cc) row var(--sprite-cr);
+  
+      /* largura do alvo do quadro */
+      --sprite-tw: 260;
+      --sprite-r: round(up, calc(var(--sprite-f) / var(--sprite-c)), 1);
+  
+      --sprite-sw: calc(var(--sprite-w) / var(--sprite-c));
+      --sprite-ar: calc(var(--sprite-tw) / var(--sprite-sw));
+      --sprite-uh: calc(var(--sprite-h) * var(--sprite-ar));
+      --sprite-uw: calc(var(--sprite-w) * var(--sprite-ar));
+      --sprite-th: calc(var(--sprite-uh) / var(--sprite-r));
+      --sprite-as: calc(var(--sprite-f) / var(--sprite-fr) * 1s);
+  
+      --sprite-cf: calc(var(--sprite-fs) + 1);
+      --sprite-cc: calc(mod(var(--sprite-fs), var(--sprite-c)) + 1);
+      --sprite-cr: calc(round(down, calc(calc(var(--sprite-tw) * var(--sprite-fs)) / var(--sprite-uw)), 1) + 1);
+      /* Posição Y, arredondar para verificar a próxima LINHA */
+      --row: calc(round(down, calc(calc(var(--sprite-tw) * var(--sprite-fs)) / var(--sprite-uw)), 1) * var(--sprite-th));
+      /* Posição X, mod para verificar COLUNA */
+      --col: mod(calc(var(--sprite-tw) * var(--sprite-fs)), var(--sprite-uw));
+      /* duração da animação baseada na taxa de quadros */
+      animation: frame var(--sprite-as) var(--sprite-at) 0s var(--sprite-ai) var(--sprite-ad) var(--sprite-af) var(--sprite-ap);
+  
+      & > .sprite-container {
+        position: relative;
+        z-index: 1;
+        background-color: rgb(165, 165, 165);
+        height: 100%;
+  
+        &:has(> div input[type="radio"]:nth-child(2):checked) {
+          .sprite {
+            scale: -1 1;
+  
+            &:hover {
+              scale: -1.4 1.4;
+            }
+          }
+        }
+  
+        .sprite-direction {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          display: flex;
+  
+          input {
+            appearance: none;
+            width: 26px;
+            height: 28px;
+  
+            &:before {
+              font-size: 1.25rem;
+              opacity: .25;
+              cursor: pointer;
+            }
+  
+            &:checked {
+              &:before {
+                opacity: .5;
+              }
+            }
+  
+            &:first-child {
+              &:before {
+                content: "◀️";
+              }
+            }
+  
+            &:last-child {
+              &:before {
+                content: "▶️";
+              }
+            }
+          }
+        }
+  
+        .sprite {
+          top: 50%;
+          position: relative;
+          translate: 0 -50%;
+          filter: drop-shadow(2px 4px 6px black);
+          height: calc(1px * var(--sprite-th));
+          width: calc(1px * var(--sprite-tw));
+          background-image: var(--sprite-image);
+          background-size: calc(1px * var(--sprite-uw)) calc(1px * var(--sprite-uh));
+          background-position: calc(-1px * var(--col)) calc(-1px * var(--row));
+          z-index: 1;
+          will-change: scale;
+          transition: scale 0.2s ease;
+  
+          &:hover {
+            scale: 1.4;
+            --color: #ffda0e;
+            filter: drop-shadow(0px 1px 0px var(--color)) drop-shadow(-1px 0px 0px var(--color)) drop-shadow(1px 0px 0px var(--color)) drop-shadow(0px 1px 0px var(--color)) drop-shadow(0px -1px 0px var(--color)) drop-shadow(1px 0px 0px var(--color)) drop-shadow(2px 4px 6px black);
+          }
+        }
+      }
+  
+      &:has(.sprite-stats .sprite-fps select option[value="12"]:checked) {
+        --sprite-fr: 12;
+      }
+  
+      &:has(.sprite-stats .sprite-fps select option[value="24"]:checked) {
+        --sprite-fr: 36;
+      }
+  
+      &:has(.sprite-stats .sprite-fps select option[value="36"]:checked) {
+        --sprite-fr: 36;
+      }
+  
+      &:has(.sprite-stats .sprite-fps select option[value="48"]:checked) {
+        --sprite-fr: 48;
+      }
+  
+      &:has(.sprite-stats .sprite-fps select option[value="64"]:checked) {
+        --sprite-fr: 64;
+      }
+  
+      &:has(.sprite-stats .sprite-fps select option[value="76"]:checked) {
+        --sprite-fr: 76;
+      }
+  
+      &:has(.sprite-stats .sprite-fps select option[value="100"]:checked) {
+        --sprite-fr: 100;
+      }
+  
+      & > .sprite-stats {
+        background: #adcbf1;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        padding: .5rem;
+  
+        dl {
+          display: grid;
+          grid-template-columns: 1fr auto;
+  
+          dt, dd {
+            &:not(:last-of-type) {
+              border-bottom: 1px solid #99b3d3;
+            }
+          }
+  
+          dd {
+            font-weight: bold;
+            font-variant-numeric: tabular-nums;
+            text-align: right;
+  
+            &.sprite-c {
+              &:before {
+                counter-reset: variable var(--sprite-c);
+                content: counter(variable);
+              }
+            }
+  
+            &.sprite-r {
+              &:before {
+                counter-reset: variable var(--sprite-r);
+                content: counter(variable);
+              }
+            }
+  
+            &.sprite-fps {
+              select {
+                background: transparent;
+                border: 0;
+                outline: none;
+                padding: 0;
+                font-weight: 700;
+                font-family: inherit;
+                font-size: inherit;
+                color: #2949c5;
+              }
+            }
+  
+            &.sprite-fr {
+              &:before {
+                counter-reset: variable var(--sprite-f);
+                content: counter(variable);
+              }
+            }
+  
+            &.sprite-tw {
+              &:before {
+                counter-reset: variable var(--sprite-f);
+                content: counter(num) '/' counter(variable);
+              }
+            }
+  
+            &.sprite-cc {
+              &:before {
+                counter-reset: variable var(--sprite-c);
+                content: counter(col) '/' counter(variable);
+              }
+            }
+  
+            &.sprite-cr {
+              &:before {
+                counter-reset: variable var(--sprite-r);
+                content: counter(row) '/' counter(variable);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
