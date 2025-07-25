@@ -1,7 +1,7 @@
 https://github.com/user-attachments/assets/fac455d3-56ca-48e5-a7c9-114bdf03471f
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/18ba2e76-cb7d-4e65-b994-ab56fc8013ac" alt="Carro" height="100">
+  <img src="https://github.com/user-attachments/assets/18ba2e76-cb7d-4e65-b994-ab56fc8013ac" alt="Carro" height="200">
 </div>
 <h1 align="center">  
   Explorador de Criaturas do Minecraft 
@@ -59,7 +59,7 @@ Catálogo digital de carros com:
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/ManoRicck/03-Garagem_de_Carros.git
+git clone https://github.com/ManoRicck/11-Minecraft.git
 ```
 2. Execute o arquivo html:
 ```bash
